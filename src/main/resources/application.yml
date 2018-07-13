@@ -1,0 +1,70 @@
+server:
+  port: 8888
+
+spring:
+  profiles:
+    active: dev
+
+#使用CGLIB来实现AOP 默认是java
+  aop:
+    proxy-target-class: true
+
+#日志
+logging:
+  config: classpath:logback/logback-spring.xml
+  path: D:/mydata/logs/cheers
+
+
+---
+spring:
+  profiles: dev
+
+  datasource:
+    url: jdbc:mysql://...:3306/...?characterEncoding=utf-8
+    username: ...
+    password: ...
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      pool-name: DatebookHikariCP
+      max-lifetime: 1000000
+      connection-timeout: 30000
+      idle-timeout: 30000
+      connection-test-query: SELECT 1
+      auto-commit: true
+
+
+
+  redis:
+    database: 0
+    host: ....
+    port: 6379
+    password: ....
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin123
+
+
+mybatis:
+     mapper-locations: classpath:mapper/*.xml
+
+mapper:
+    mappers:  com.mrh.cheers.web.dao
+    not-empty: false
+    identity: MYSQL
+
+pagehelper:
+     helperDialect: mysql
+     reasonable: true
+     supportMethodsArguments: true
+     params: count=countSql
+     returnPageInfo: check
+
+#消息队列
+queues:
+  test_queue: test_queue
